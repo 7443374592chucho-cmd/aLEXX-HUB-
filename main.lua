@@ -1,5 +1,14 @@
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
-local Window = Rayfield:CreateWindow({Name = "ALEXX HUB | Rayfield"})
+local Window = Rayfield:CreateWindow({
+   Name = "Krynex", 
+   LoadingTitle = "Krynex", 
+   LoadingSubtitle = " ", 
+   ConfigurationSaving = {
+      Enabled = true,
+      FolderName = "Krynex"
+   }
+})
+
 local CombatTab = Window:CreateTab("Combat", nil)
 local VisualsTab = Window:CreateTab("Visuals", nil)
 CombatTab:CreateToggle({
@@ -10,14 +19,14 @@ CombatTab:CreateToggle({
    end,
 })
 CombatTab:CreateToggle({
-   Name = "Hitbox 7x7x7",
+   Name = "Hitbox Normal",
    CurrentValue = false,
    Callback = function(Value)
       _G.HitboxEnabled = Value
    end,
 })
 CombatTab:CreateToggle({
-   Name = "Hitbox Invisible (Pro)",
+   Name = "Hitbox (Pro)",
    CurrentValue = false,
    Callback = function(Value)
       _G.HitboxVisibleEnabled = Value
@@ -37,6 +46,14 @@ CombatTab:CreateToggle({
    CurrentValue = false,
    Callback = function(Value)
       _G.FastCam = Value
+   end,
+})
+
+CombatTab:CreateToggle({
+   Name = "Speed Disimulado",
+   CurrentValue = false,
+   Callback = function(Value)
+      _G.SpeedEnabled = Value
    end,
 })
 
@@ -109,6 +126,29 @@ task.spawn(function()
 		end
 	end
 end)
+
+task.spawn(function()
+    while task.wait(0.2) do
+        local character = game.Players.LocalPlayer.Character
+        local humanoid = character and character:FindFirstChild("Humanoid")
+        
+        if humanoid then
+            if _G.SpeedEnabled then
+                -- Fuerza la velocidad a 23 cuando el toggle está ON
+                if humanoid.WalkSpeed ~= 23 then
+                    humanoid.WalkSpeed = 23
+                end
+            else
+                -- Regresa a 16 (normalidad) solo si el toggle está OFF
+                -- y si el personaje aún tiene la velocidad 23
+                if humanoid.WalkSpeed == 23 then
+                    humanoid.WalkSpeed = 16
+                end
+            end
+        end
+    end
+end)
+
 
 -- =========================
 -- HITBOX LOGIC ORIGINAL
