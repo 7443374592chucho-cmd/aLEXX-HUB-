@@ -31,6 +31,15 @@ VisualsTab:CreateToggle({
       _G.ChamsEnabled = Value
    end,
 })
+
+CombatTab:CreateToggle({
+   Name = "Cámara Rápida (FastCam)",
+   CurrentValue = false,
+   Callback = function(Value)
+      _G.FastCam = Value
+   end,
+})
+
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local Mouse = LocalPlayer:GetMouse()
@@ -181,6 +190,15 @@ mt.__index = newcclosure(function(self, index)
     return oldIndex(self, index)
 end)
 setreadonly(mt, true)
+
+-- Lógica para Cámara Rápida
+game:GetService("RunService").RenderStepped:Connect(function()
+    if Camera and _G.FastCam ~= nil then
+        local targetFOV = _G.FastCam and 110 or 70
+        Camera.FieldOfView = Camera.FieldOfView + (targetFOV - Camera.FieldOfView) * 0.1
+    end
+end)
+
 
 Rayfield:LoadConfiguration()
 
