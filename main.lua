@@ -1,8 +1,11 @@
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+
 local Window = Rayfield:CreateWindow({
    Name = "Krynex", 
    LoadingTitle = "Krynex", 
    LoadingSubtitle = " ", 
+   -- Definimos colores para que el menú sea gris en lugar de negro puro
+   Color = Color3.fromRGB(120, 120, 120), 
    ConfigurationSaving = {
       Enabled = true,
       FolderName = "Krynex"
