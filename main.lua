@@ -4,8 +4,7 @@ local Window = Rayfield:CreateWindow({
    Name = "Krynex", 
    LoadingTitle = "Krynex", 
    LoadingSubtitle = " ", 
-   -- Definimos colores para que el menú sea gris en lugar de negro puro
-   Color = Color3.fromRGB(120, 120, 120), 
+   Theme = "Light", 
    ConfigurationSaving = {
       Enabled = true,
       FolderName = "Krynex"
