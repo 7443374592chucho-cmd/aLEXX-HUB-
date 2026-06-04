@@ -43,6 +43,24 @@ VisualsTab:CreateToggle({
    end,
 })
 
+VisualsTab:CreateToggle({
+   Name = "Hitbox Disimulada",
+   CurrentValue = false,
+   Callback = function(Value)
+      _G.HitboxDisimuladaEnabled = Value
+      
+      -- Limpieza inmediata al desactivar el toggle
+      if not Value then
+         for _, p in pairs(Players:GetPlayers()) do
+            if p.Character and p.Character:FindFirstChild("HumanoidRootPart") then
+               p.Character.HumanoidRootPart.Size = Vector3.new(2, 2, 1)
+               p.Character.HumanoidRootPart.Transparency = 1
+            end
+         end
+      end
+   end,
+})
+
 CombatTab:CreateToggle({
    Name = "Cámara Rápida (FastCam)",
    CurrentValue = false,
@@ -241,6 +259,40 @@ game:GetService("RunService").RenderStepped:Connect(function()
     end
 end)
 
+-- =========================
+-- HITBOX DISIMULADA (SISTEMA POR EVENTO)
+-- =========================
+local RunService = game:GetService("RunService")
+
+RunService.Heartbeat:Connect(function()
+    if not _G.HitboxDisimuladaEnabled then return end
+    
+    for _, p in pairs(Players:GetPlayers()) do
+        if p ~= LocalPlayer and p.Character and p.Character:FindFirstChild("HumanoidRootPart") and IsPlayerInMatch(p) then
+            local HRP = p.Character.HumanoidRootPart
+            
+            -- Lógica Pro (Raycast)
+            local origin = Camera.CFrame.Position
+            local direction = (HRP.Position - origin)
+            local params = RaycastParams.new()
+            params.FilterType = Enum.RaycastFilterType.Exclude
+            params.FilterDescendantsInstances = {LocalPlayer.Character}
+            
+            local result = workspace:Raycast(origin, direction, params)
+            
+            -- Determinación de tamaño
+            local targetSize = (result and result.Instance:IsDescendantOf(p.Character)) and Vector3.new(4, 4, 4) or Vector3.new(2, 2, 1)
+            local targetTransparency = (result and result.Instance:IsDescendantOf(p.Character)) and 0.8 or 1
+            
+            -- Aplicación solo si es necesario (evita parpadeo)
+            if HRP.Size ~= targetSize then
+                HRP.Size = targetSize
+                HRP.Transparency = targetTransparency
+                HRP.CanCollide = false
+            end
+        end
+    end
+end)
 
 Rayfield:LoadConfiguration()
 
