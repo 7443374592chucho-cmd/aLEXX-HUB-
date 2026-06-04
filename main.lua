@@ -49,7 +49,6 @@ VisualsTab:CreateToggle({
    Callback = function(Value)
       _G.HitboxDisimuladaEnabled = Value
       
-      -- Limpieza inmediata al desactivar el toggle
       if not Value then
          for _, p in pairs(Players:GetPlayers()) do
             if p.Character and p.Character:FindFirstChild("HumanoidRootPart") then
@@ -154,13 +153,12 @@ task.spawn(function()
         
         if humanoid then
             if _G.SpeedEnabled then
-                -- Fuerza la velocidad a 23 cuando el toggle está ON
+                
                 if humanoid.WalkSpeed ~= 23 then
                     humanoid.WalkSpeed = 23
                 end
             else
-                -- Regresa a 16 (normalidad) solo si el toggle está OFF
-                -- y si el personaje aún tiene la velocidad 23
+                
                 if humanoid.WalkSpeed == 23 then
                     humanoid.WalkSpeed = 16
                 end
@@ -251,7 +249,6 @@ mt.__index = newcclosure(function(self, index)
 end)
 setreadonly(mt, true)
 
--- Lógica para Cámara Rápida
 game:GetService("RunService").RenderStepped:Connect(function()
     if Camera and _G.FastCam ~= nil then
         local targetFOV = _G.FastCam and 110 or 70
@@ -271,7 +268,7 @@ RunService.Heartbeat:Connect(function()
         if p ~= LocalPlayer and p.Character and p.Character:FindFirstChild("HumanoidRootPart") and IsPlayerInMatch(p) then
             local HRP = p.Character.HumanoidRootPart
             
-            -- Lógica Pro (Raycast)
+            
             local origin = Camera.CFrame.Position
             local direction = (HRP.Position - origin)
             local params = RaycastParams.new()
@@ -280,11 +277,11 @@ RunService.Heartbeat:Connect(function()
             
             local result = workspace:Raycast(origin, direction, params)
             
-            -- Determinación de tamaño
+            
             local targetSize = (result and result.Instance:IsDescendantOf(p.Character)) and Vector3.new(4, 4, 4) or Vector3.new(2, 2, 1)
             local targetTransparency = (result and result.Instance:IsDescendantOf(p.Character)) and 0.8 or 1
             
-            -- Aplicación solo si es necesario (evita parpadeo)
+            
             if HRP.Size ~= targetSize then
                 HRP.Size = targetSize
                 HRP.Transparency = targetTransparency
