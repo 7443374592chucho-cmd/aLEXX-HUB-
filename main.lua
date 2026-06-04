@@ -48,15 +48,6 @@ VisualsTab:CreateToggle({
    CurrentValue = false,
    Callback = function(Value)
       _G.HitboxDisimuladaEnabled = Value
-      
-      if not Value then
-         for _, p in pairs(Players:GetPlayers()) do
-            if p.Character and p.Character:FindFirstChild("HumanoidRootPart") then
-               p.Character.HumanoidRootPart.Size = Vector3.new(2, 2, 1)
-               p.Character.HumanoidRootPart.Transparency = 1
-            end
-         end
-      end
    end,
 })
 
