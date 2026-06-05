@@ -44,6 +44,14 @@ VisualsTab:CreateToggle({
 })
 
 VisualsTab:CreateToggle({
+   Name = "Auto Jump",
+   CurrentValue = _G.AutoJumpEnabled or false,
+   Callback = function(Value)
+      _G.AutoJumpEnabled = Value
+   end,
+})
+
+VisualsTab:CreateToggle({
    Name = "Hitbox Disimulada",
    CurrentValue = false,
    Callback = function(Value)
@@ -278,6 +286,16 @@ RunService.Heartbeat:Connect(function()
                 HRP.Transparency = targetTransparency
                 HRP.CanCollide = false
             end
+        end
+    end
+end)
+
+game:GetService("RunService").RenderStepped:Connect(function()
+    if _G.AutoJumpEnabled then
+        local Character = game.Players.LocalPlayer.Character
+        local Humanoid = Character and Character:FindFirstChild("Humanoid")
+        if Humanoid and Humanoid:GetState() == Enum.HumanoidStateType.Running then
+            Humanoid.Jump = true
         end
     end
 end)
