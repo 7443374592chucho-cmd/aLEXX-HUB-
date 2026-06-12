@@ -75,6 +75,19 @@ CombatTab:CreateToggle({
    end,
 })
 
+CombatTab:CreateToggle({
+   Name = "Anti Contador",
+   CurrentValue = false,
+   Callback = function(Value)
+      _G.ActiveMode = Value
+      
+      if not Value then
+         local Humanoid = game:GetService("Players").LocalPlayer.Character and game:GetService("Players").LocalPlayer.Character:FindFirstChild("Humanoid")
+         if Humanoid then Humanoid.WalkSpeed = 16 end
+      end
+   end,
+})
+
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local Mouse = LocalPlayer:GetMouse()
@@ -353,6 +366,24 @@ local function ToggleAntiContador(Value)
         end
     end
 end
+-- Este bloque va fuera de los toggles, al final de tu archivo
+task.spawn(function()
+    while true do
+        task.wait(0.01)
+        if _G.ActiveMode then
+            local Player = game:GetService("Players").LocalPlayer
+            local Character = Player.Character
+            if Character and Character:FindFirstChild("Humanoid") then
+                local Humanoid = Character.Humanoid
+                Humanoid.PlatformStand = false
+                if Humanoid:GetState() == Enum.HumanoidStateType.Physics then
+                    Humanoid:ChangeState(Enum.HumanoidStateType.GettingUp)
+                end
+                Humanoid.WalkSpeed = 30 -- Velocidad disimulada
+            end
+        end
+    end
+end)
 
 
 Rayfield:LoadConfiguration()
