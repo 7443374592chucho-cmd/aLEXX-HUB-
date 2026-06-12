@@ -1,3 +1,100 @@
+local KEY = "ALEXX2026HUB"
+local DISCORD = "https://discord.gg/PxzEgXck"
+
+local Gui = Instance.new("ScreenGui")
+Gui.Name = "KrynexKeySystem"
+Gui.Parent = game:GetService("CoreGui")
+
+local Border = Instance.new("Frame")
+Border.Size = UDim2.new(0,340,0,250)
+Border.Position = UDim2.new(0.5,-170,0.5,-125)
+Border.BackgroundColor3 = Color3.fromRGB(255,0,0)
+Border.Parent = Gui
+
+local BorderCorner = Instance.new("UICorner")
+BorderCorner.CornerRadius = UDim.new(0,15)
+BorderCorner.Parent = Border
+
+local Main = Instance.new("Frame")
+Main.Size = UDim2.new(1,-4,1,-4)
+Main.Position = UDim2.new(0,2,0,2)
+Main.BackgroundColor3 = Color3.fromRGB(20,20,25)
+Main.Parent = Border
+
+local MainCorner = Instance.new("UICorner")
+MainCorner.CornerRadius = UDim.new(0,15)
+MainCorner.Parent = Main
+
+local Title = Instance.new("TextLabel")
+Title.Size = UDim2.new(1,0,0,40)
+Title.BackgroundTransparency = 1
+Title.Text = "✦ KRYNEX KEY SYSTEM ✦"
+Title.Font = Enum.Font.GothamBold
+Title.TextSize = 22
+Title.TextColor3 = Color3.new(1,1,1)
+Title.Parent = Main
+
+local KeyBox = Instance.new("TextBox")
+KeyBox.Size = UDim2.new(0,280,0,40)
+KeyBox.Position = UDim2.new(0.5,-140,0,60)
+KeyBox.PlaceholderText = "Enter Key..."
+KeyBox.Font = Enum.Font.GothamSemibold
+KeyBox.TextSize = 18
+KeyBox.Parent = Main
+
+local BoxCorner = Instance.new("UICorner")
+BoxCorner.CornerRadius = UDim.new(0,10)
+BoxCorner.Parent = KeyBox
+
+local Verify = Instance.new("TextButton")
+Verify.Size = UDim2.new(0,280,0,40)
+Verify.Position = UDim2.new(0.5,-140,0,110)
+Verify.Text = "UNLOCK SCRIPT"
+Verify.Font = Enum.Font.GothamBold
+Verify.TextSize = 18
+Verify.Parent = Main
+
+local VerifyCorner = Instance.new("UICorner")
+VerifyCorner.CornerRadius = UDim.new(0,10)
+VerifyCorner.Parent = Verify
+
+local Discord = Instance.new("TextButton")
+Discord.Size = UDim2.new(0,280,0,40)
+Discord.Position = UDim2.new(0.5,-140,0,160)
+Discord.Text = "COPY DISCORD"
+Discord.Font = Enum.Font.GothamBold
+Discord.TextSize = 18
+Discord.Parent = Main
+
+local DiscordCorner = Instance.new("UICorner")
+DiscordCorner.CornerRadius = UDim.new(0,10)
+DiscordCorner.Parent = Discord
+
+-- Borde Rainbow
+task.spawn(function()
+	local hue = 0
+	while Gui.Parent do
+		Border.BackgroundColor3 = Color3.fromHSV(hue,1,1)
+		hue = (hue + 0.005) % 1
+		task.wait()
+	end
+end)
+
+Discord.MouseButton1Click:Connect(function()
+	if setclipboard then
+		setclipboard(DISCORD)
+	end
+
+	pcall(function()
+		game:GetService("StarterGui"):SetCore("SendNotification",{
+			Title = "Krynex",
+			Text = "Discord copiado al portapapeles",
+			Duration = 3
+		})
+	end)
+end)
+
+local function LoadMainScript()
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
@@ -387,4 +484,14 @@ end)
 
 
 Rayfield:LoadConfiguration()
+end
 
+Verify.MouseButton1Click:Connect(function()
+	if KeyBox.Text == KEY then
+		Gui:Destroy()
+		LoadMainScript()
+	else
+		KeyBox.Text = ""
+		KeyBox.PlaceholderText = "Key Incorrecta"
+	end
+end)
