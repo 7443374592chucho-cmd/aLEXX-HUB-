@@ -70,7 +70,7 @@ local DiscordCorner = Instance.new("UICorner")
 DiscordCorner.CornerRadius = UDim.new(0,10)
 DiscordCorner.Parent = Discord
 
--- Borde Rainbow
+
 task.spawn(function()
 	local hue = 0
 	while Gui.Parent do
@@ -114,7 +114,7 @@ CombatTab:CreateToggle({
    Name = "Silent Aim",
    CurrentValue = false,
    Callback = function(Value)
-      _G.SilentAimEnabled = Value -- Aquí activas/desactivas tu lógica
+      _G.SilentAimEnabled = Value 
    end,
 })
 CombatTab:CreateToggle({
@@ -190,17 +190,13 @@ local LocalPlayer = Players.LocalPlayer
 local Mouse = LocalPlayer:GetMouse()
 local Camera = workspace.CurrentCamera
 
--- =========================
--- VARIABLES (MANTENIDAS)
--- =========================
+
 _G.SilentAimEnabled = false
 _G.HitboxEnabled = false
 _G.HitboxVisibleEnabled = false
 _G.ChamsEnabled = false
 
--- =========================
--- IS PLAYER IN MATCH (ORIGINAL)
--- =========================
+
 local function IsPlayerInMatch(player)
 	local RunningGames = workspace:FindFirstChild("RunningGames")
 	if not RunningGames then return false end
@@ -219,9 +215,7 @@ local function IsPlayerInMatch(player)
 	return false
 end
 
--- =========================
--- VISUALS ORIGINAL REAL
--- =========================
+
 local S = { espColor = Color3.fromRGB(255,0,0) }
 local Highlights = {}
 
@@ -277,9 +271,7 @@ task.spawn(function()
 end)
 
 
--- =========================
--- HITBOX LOGIC ORIGINAL
--- =========================
+
 task.spawn(function()
 	while task.wait(0.15) do
 		for _,p in pairs(Players:GetPlayers()) do
@@ -321,11 +313,6 @@ task.spawn(function()
 	end
 end)
 
--- =========================
--- SILENT AIM ORIGINAL (CORREGIDO Y OPTIMIZADO)
--- =========================
-
--- Función independiente de Wall Check
 local function IsVisible(targetPart)
     local raycastParams = RaycastParams.new()
     raycastParams.FilterDescendantsInstances = {LocalPlayer.Character, Camera}
@@ -333,8 +320,6 @@ local function IsVisible(targetPart)
     
     local ray = workspace:Raycast(Camera.CFrame.Position, (targetPart.Position - Camera.CFrame.Position), raycastParams)
     
-    -- Si no hay nada en medio (ray es nil), es visible. 
-    -- Si hay algo, validamos que sea el modelo del objetivo.
     if not ray then return true end
     return ray.Instance:IsDescendantOf(targetPart.Parent)
 end
@@ -350,8 +335,7 @@ local function getBestTarget()
 		if v ~= LocalPlayer and v.Character and v.Character:FindFirstChild("HumanoidRootPart") and v.Character:FindFirstChild("Humanoid") and v.Character.Humanoid.Health > 0 and IsPlayerInMatch(v) then
 			local hrp = v.Character.HumanoidRootPart
 			local pos,visible = Camera:WorldToViewportPoint(hrp.Position)
-			
-			-- Validación: en pantalla Y sin obstáculos (Wall Check)
+		
 			if visible and IsVisible(hrp) then
 				local distance = (Vector2.new(pos.X,pos.Y) - Center).Magnitude
 				if distance < shortestDistance then
@@ -379,9 +363,7 @@ mt.__index = newcclosure(function(self, index)
 end)
 setreadonly(mt, true)
 
--- =========================
--- HITBOX DISIMULADA (SISTEMA POR EVENTO)
--- =========================
+
 local RunService = game:GetService("RunService")
 
 RunService.Heartbeat:Connect(function()
@@ -424,9 +406,7 @@ game:GetService("RunService").RenderStepped:Connect(function()
     end
 end)
 
--- =============================================
--- LÓGICA ANTI CONTADOR (CÓDIGO PARA LIBRERÍA)
--- =============================================
+
 local RunService = game:GetService("RunService")
 local Players = game:GetService("Players")
 
@@ -446,13 +426,13 @@ local function ToggleAntiContador(Value)
                     if Humanoid:GetState() == Enum.HumanoidStateType.Physics then
                         Humanoid:ChangeState(Enum.HumanoidStateType.GettingUp)
                     end
-                    -- Mantener velocidad
+                    
                     Humanoid.WalkSpeed = 30
                 end
             end
         end)
     else
-        -- Detener el bucle y resetear velocidad
+        
         if AntiContadorConnection then
             AntiContadorConnection:Disconnect()
             AntiContadorConnection = nil
@@ -463,7 +443,7 @@ local function ToggleAntiContador(Value)
         end
     end
 end
--- Este bloque va fuera de los toggles, al final de tu archivo
+
 task.spawn(function()
     while true do
         task.wait(0.01)
