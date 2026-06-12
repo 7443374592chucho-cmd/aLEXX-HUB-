@@ -212,17 +212,38 @@ task.spawn(function()
 end)
 
 -- =========================
--- SILENT AIM ORIGINAL
+-- SILENT AIM ORIGINAL (CORREGIDO Y OPTIMIZADO)
 -- =========================
+
+-- Función independiente de Wall Check
+local function IsVisible(targetPart)
+    local raycastParams = RaycastParams.new()
+    raycastParams.FilterDescendantsInstances = {LocalPlayer.Character, Camera}
+    raycastParams.FilterType = Enum.RaycastFilterType.Exclude
+    
+    local ray = workspace:Raycast(Camera.CFrame.Position, (targetPart.Position - Camera.CFrame.Position), raycastParams)
+    
+    -- Si no hay nada en medio (ray es nil), es visible. 
+    -- Si hay algo, validamos que sea el modelo del objetivo.
+    if not ray then return true end
+    return ray.Instance:IsDescendantOf(targetPart.Parent)
+end
+
 local function getBestTarget()
 	local target = nil
 	local shortestDistance = math.huge
+	local Center = Vector2.new(
+		Camera.ViewportSize.X / 2,
+		Camera.ViewportSize.Y / 2
+	)
 	for _,v in ipairs(Players:GetPlayers()) do
 		if v ~= LocalPlayer and v.Character and v.Character:FindFirstChild("HumanoidRootPart") and v.Character:FindFirstChild("Humanoid") and v.Character.Humanoid.Health > 0 and IsPlayerInMatch(v) then
 			local hrp = v.Character.HumanoidRootPart
 			local pos,visible = Camera:WorldToViewportPoint(hrp.Position)
-			if visible then
-				local distance = (Vector2.new(pos.X,pos.Y) - Vector2.new(Mouse.X,Mouse.Y)).Magnitude
+			
+			-- Validación: en pantalla Y sin obstáculos (Wall Check)
+			if visible and IsVisible(hrp) then
+				local distance = (Vector2.new(pos.X,pos.Y) - Center).Magnitude
 				if distance < shortestDistance then
 					shortestDistance = distance
 					target = hrp
@@ -247,13 +268,6 @@ mt.__index = newcclosure(function(self, index)
     return oldIndex(self, index)
 end)
 setreadonly(mt, true)
-
-game:GetService("RunService").RenderStepped:Connect(function()
-    if Camera and _G.FastCam ~= nil then
-        local targetFOV = _G.FastCam and 110 or 70
-        Camera.FieldOfView = Camera.FieldOfView + (targetFOV - Camera.FieldOfView) * 0.1
-    end
-end)
 
 -- =========================
 -- HITBOX DISIMULADA (SISTEMA POR EVENTO)
