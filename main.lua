@@ -314,5 +314,46 @@ game:GetService("RunService").RenderStepped:Connect(function()
     end
 end)
 
+-- =============================================
+-- LÓGICA ANTI CONTADOR (CÓDIGO PARA LIBRERÍA)
+-- =============================================
+local RunService = game:GetService("RunService")
+local Players = game:GetService("Players")
+
+local AntiContadorConnection = nil
+
+local function ToggleAntiContador(Value)
+    if Value then
+        -- Iniciar el bucle de mantenimiento
+        AntiContadorConnection = RunService.Heartbeat:Connect(function()
+            local Character = Players.LocalPlayer.Character
+            if Character then
+                local Humanoid = Character:FindFirstChild("Humanoid")
+                if Humanoid then
+                    -- Asegurar que el humanoide no esté en modo plataforma
+                    Humanoid.PlatformStand = false
+                    -- Forzar estado de pie si entra en física
+                    if Humanoid:GetState() == Enum.HumanoidStateType.Physics then
+                        Humanoid:ChangeState(Enum.HumanoidStateType.GettingUp)
+                    end
+                    -- Mantener velocidad
+                    Humanoid.WalkSpeed = 30
+                end
+            end
+        end)
+    else
+        -- Detener el bucle y resetear velocidad
+        if AntiContadorConnection then
+            AntiContadorConnection:Disconnect()
+            AntiContadorConnection = nil
+        end
+        local Humanoid = Players.LocalPlayer.Character and Players.LocalPlayer.Character:FindFirstChild("Humanoid")
+        if Humanoid then 
+            Humanoid.WalkSpeed = 16 
+        end
+    end
+end
+
+
 Rayfield:LoadConfiguration()
 
