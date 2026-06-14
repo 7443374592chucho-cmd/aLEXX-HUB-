@@ -198,23 +198,29 @@ _G.ChamsEnabled = false
 
 
 local function IsPlayerInMatch(player)
-	local RunningGames = workspace:FindFirstChild("RunningGames")
-	if not RunningGames then return false end
-	for _,gameFolder in pairs(RunningGames:GetChildren()) do
-		local AlivePlayers = gameFolder:FindFirstChild("AlivePlayers")
-		if AlivePlayers then
-			local TeamBlue = AlivePlayers:FindFirstChild("TeamBlue")
-			local TeamRed = AlivePlayers:FindFirstChild("TeamRed")
-			local myBlue = TeamBlue and TeamBlue:FindFirstChild(LocalPlayer.Name)
-			local myRed = TeamRed and TeamRed:FindFirstChild(LocalPlayer.Name)
-			if myBlue then if TeamRed and TeamRed:FindFirstChild(player.Name) then return true end
-			elseif myRed then if TeamBlue and TeamBlue:FindFirstChild(player.Name) then return true end
-			end
-		end
-	end
-	return false
+    -- 1. Obtenemos tus propios atributos
+    local myTeam = LocalPlayer:GetAttribute("Team")
+    local myGame = LocalPlayer:GetAttribute("Game")
+    local myMatch = LocalPlayer:GetAttribute("MatchId")
+    
+    -- 2. Obtenemos los atributos del jugador objetivo
+    local targetTeam = player:GetAttribute("Team")
+    local targetGame = player:GetAttribute("Game")
+    local targetMatch = player:GetAttribute("MatchId")
+    
+    -- 3. Verificamos:
+    --    a) Que ambos estén en la misma partida (Game y MatchId)
+    --    b) Que el equipo sea diferente (ej: si tú eres TeamBlue, el enemigo debe ser TeamRed)
+    if myGame and myMatch and targetGame and targetMatch then
+        if myGame == targetGame and myMatch == targetMatch then
+            if myTeam and targetTeam and myTeam ~= targetTeam then
+                return true
+            end
+        end
+    end
+    
+    return false
 end
-
 
 local S = { espColor = Color3.fromRGB(255,0,0) }
 local Highlights = {}
