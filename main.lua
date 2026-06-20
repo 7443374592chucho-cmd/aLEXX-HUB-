@@ -29,22 +29,30 @@ mainFrame.Position = UDim2.new(0, 3, 0, 3)
 mainFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
 Instance.new("UICorner", mainFrame).CornerRadius = UDim.new(0, 13)
 
--- Botón de Salir (X) y By Yisus
+-- Botón de Salir (X) organizado
 local closeBtn = Instance.new("TextButton", mainFrame)
-closeBtn.Size = UDim2.new(0, 30, 0, 30)
-closeBtn.Position = UDim2.new(0.92, 0, 0.05, 0)
+closeBtn.Size = UDim2.new(0, 20, 0, 20)
+closeBtn.Position = UDim2.new(0.95, 0, 0.05, 0)
 closeBtn.Text = "X"
 closeBtn.TextColor3 = Color3.new(1, 1, 1)
 closeBtn.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
-Instance.new("UICorner", closeBtn).CornerRadius = UDim.new(1, 0)
+closeBtn.BackgroundTransparency = 1
 closeBtn.MouseButton1Click:Connect(function() screenGui:Destroy() end)
 
 local credits = Instance.new("TextLabel", mainFrame)
-credits.Size = UDim2.new(0, 100, 0, 30)
-credits.Position = UDim2.new(0.65, 0, 0.05, 0)
+credits.Size = UDim2.new(0, 50, 0, 20)
+credits.Position = UDim2.new(0.70, 0, 0.05, 0)
 credits.Text = "By Yisus"
 credits.TextColor3 = Color3.fromRGB(150, 150, 150)
 credits.BackgroundTransparency = 1
+
+-- Hora en tiempo real
+local timeLabel = Instance.new("TextLabel", mainFrame)
+timeLabel.Size = UDim2.new(0, 50, 0, 20)
+timeLabel.Position = UDim2.new(0.82, 0, 0.05, 0)
+timeLabel.TextColor3 = Color3.fromRGB(150, 150, 150)
+timeLabel.BackgroundTransparency = 1
+timeLabel.TextSize = 14
 
 -- 2. Perfil y Nombre
 local avatarCircle = Instance.new("ImageLabel", mainFrame)
@@ -53,6 +61,11 @@ avatarCircle.Position = UDim2.new(0.03, 0, 0.05, 0)
 avatarCircle.Image = Players:GetUserThumbnailAsync(player.UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size100x100)
 avatarCircle.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
 Instance.new("UICorner", avatarCircle).CornerRadius = UDim.new(1, 0)
+
+-- Borde amarillo para el perfil
+local avatarStroke = Instance.new("UIStroke", avatarCircle)
+avatarStroke.Color = Color3.fromRGB(255, 255, 0)
+avatarStroke.Thickness = 3
 
 local nameLabel = Instance.new("TextLabel", mainFrame)
 nameLabel.Size = UDim2.new(0, 200, 0, 60)
@@ -64,7 +77,7 @@ nameLabel.TextSize = 20
 nameLabel.TextXAlignment = Enum.TextXAlignment.Left
 nameLabel.BackgroundTransparency = 1
 
--- 3. Key System con diseño mejorado
+-- 3. Key System
 local keyInput = Instance.new("TextBox", mainFrame)
 keyInput.Size = UDim2.new(0, 350, 0, 40)
 keyInput.Position = UDim2.new(0.5, -175, 0.4, 0)
@@ -75,19 +88,12 @@ keyInput.TextColor3 = Color3.new(1, 1, 1)
 keyInput.Font = Enum.Font.Gotham
 Instance.new("UICorner", keyInput).CornerRadius = UDim.new(0, 8)
 
--- Borde brillante para el TextBox
+-- Borde azul para el TextBox
 local stroke = Instance.new("UIStroke", keyInput)
-stroke.Color = Color3.fromRGB(50, 50, 60)
+stroke.Color = Color3.fromRGB(0, 102, 255)
 stroke.Thickness = 2
 
-keyInput.Focused:Connect(function()
-    TweenService:Create(stroke, TweenInfo.new(0.3), {Color = Color3.fromRGB(0, 102, 255)}):Play()
-end)
-keyInput.FocusLost:Connect(function()
-    TweenService:Create(stroke, TweenInfo.new(0.3), {Color = Color3.fromRGB(50, 50, 60)}):Play()
-end)
-
--- Función de animación corregida
+-- Función de animación
 local function addClickAnimation(btn)
     local originalSize = btn.Size
     btn.MouseButton1Down:Connect(function()
@@ -126,13 +132,16 @@ statusLabel.TextColor3 = Color3.fromRGB(150, 150, 150)
 statusLabel.TextSize = 14
 statusLabel.BackgroundTransparency = 1
 
--- 5. Lógica de giro y Ping en tiempo real
+-- 5. Lógica de giro, hora y Ping
 local speed = 60
 local rot = 0
 RunService.RenderStepped:Connect(function(dt)
     rot = rot + (speed * dt)
     avatarCircle.Rotation = rot
     gradient.Rotation = rot
+    
+    timeLabel.Text = os.date("%H:%M")
+    
     local ping = math.floor(Stats.Network.ServerStatsItem["Data Ping"]:GetValue() + 0.5)
     statusLabel.Text = "Status: Online | Ping: " .. ping .. "ms"
 end)
@@ -140,10 +149,8 @@ end)
 -- Lógica para los botones
 getKeyBtn.MouseButton1Click:Connect(function()
     local input = keyInput.Text
-    -- Cambia "TU_KEY_SECRETA_AQUI" por tu clave real
     if input == "ALEXX2006@" then
         statusLabel.Text = "Key correcta. Ejecutando..."
-        -- AQUÍ VA TU CÓDIGO DE SCRIPT QUE SE EJECUTA SI LA KEY ES VÁLIDA
     else
         statusLabel.Text = "Key incorrecta, intenta de nuevo"
         task.wait(2)
@@ -152,7 +159,6 @@ getKeyBtn.MouseButton1Click:Connect(function()
 end)
 
 copyDiscordBtn.MouseButton1Click:Connect(function()
-    -- Sustituye el enlace por tu link de Discord
     setclipboard("https://discord.gg/UseegSKU")
     statusLabel.Text = "Discord copiado al portapapeles"
     task.wait(2)
