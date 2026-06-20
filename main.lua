@@ -1,483 +1,160 @@
-local KEY = "ALEXX2026HUB"
-local DISCORD = "https://discord.gg/PxzEgXck"
-
-local Gui = Instance.new("ScreenGui")
-Gui.Name = "KrynexKeySystem"
-Gui.Parent = game:GetService("CoreGui")
-
-local Border = Instance.new("Frame")
-Border.Size = UDim2.new(0,340,0,250)
-Border.Position = UDim2.new(0.5,-170,0.5,-125)
-Border.BackgroundColor3 = Color3.fromRGB(255,0,0)
-Border.Parent = Gui
-
-local BorderCorner = Instance.new("UICorner")
-BorderCorner.CornerRadius = UDim.new(0,15)
-BorderCorner.Parent = Border
-
-local Main = Instance.new("Frame")
-Main.Size = UDim2.new(1,-4,1,-4)
-Main.Position = UDim2.new(0,2,0,2)
-Main.BackgroundColor3 = Color3.fromRGB(20,20,25)
-Main.Parent = Border
-
-local MainCorner = Instance.new("UICorner")
-MainCorner.CornerRadius = UDim.new(0,15)
-MainCorner.Parent = Main
-
-local Title = Instance.new("TextLabel")
-Title.Size = UDim2.new(1,0,0,40)
-Title.BackgroundTransparency = 1
-Title.Text = "✦ KRYNEX KEY SYSTEM ✦"
-Title.Font = Enum.Font.GothamBold
-Title.TextSize = 22
-Title.TextColor3 = Color3.new(1,1,1)
-Title.Parent = Main
-
-local KeyBox = Instance.new("TextBox")
-KeyBox.Size = UDim2.new(0,280,0,40)
-KeyBox.Position = UDim2.new(0.5,-140,0,60)
-KeyBox.PlaceholderText = "Enter Key..."
-KeyBox.Font = Enum.Font.GothamSemibold
-KeyBox.TextSize = 18
-KeyBox.Parent = Main
-
-local BoxCorner = Instance.new("UICorner")
-BoxCorner.CornerRadius = UDim.new(0,10)
-BoxCorner.Parent = KeyBox
-
-local Verify = Instance.new("TextButton")
-Verify.Size = UDim2.new(0,280,0,40)
-Verify.Position = UDim2.new(0.5,-140,0,110)
-Verify.Text = "UNLOCK SCRIPT"
-Verify.Font = Enum.Font.GothamBold
-Verify.TextSize = 18
-Verify.Parent = Main
-
-local VerifyCorner = Instance.new("UICorner")
-VerifyCorner.CornerRadius = UDim.new(0,10)
-VerifyCorner.Parent = Verify
-
-local Discord = Instance.new("TextButton")
-Discord.Size = UDim2.new(0,280,0,40)
-Discord.Position = UDim2.new(0.5,-140,0,160)
-Discord.Text = "COPY DISCORD"
-Discord.Font = Enum.Font.GothamBold
-Discord.TextSize = 18
-Discord.Parent = Main
-
-local DiscordCorner = Instance.new("UICorner")
-DiscordCorner.CornerRadius = UDim.new(0,10)
-DiscordCorner.Parent = Discord
-
-
-task.spawn(function()
-	local hue = 0
-	while Gui.Parent do
-		Border.BackgroundColor3 = Color3.fromHSV(hue,1,1)
-		hue = (hue + 0.005) % 1
-		task.wait()
-	end
-end)
-
-Discord.MouseButton1Click:Connect(function()
-	if setclipboard then
-		setclipboard(DISCORD)
-	end
-
-	pcall(function()
-		game:GetService("StarterGui"):SetCore("SendNotification",{
-			Title = "Krynex",
-			Text = "Discord copiado al portapapeles",
-			Duration = 3
-		})
-	end)
-end)
-
-local function LoadMainScript()
-local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
-
-local Window = Rayfield:CreateWindow({
-   Name = "Krynex", 
-   LoadingTitle = "Krynex", 
-   LoadingSubtitle = " ", 
-   Theme = "Light", 
-   ConfigurationSaving = {
-      Enabled = true,
-      FolderName = "Krynex"
-   }
-})
-
-local CombatTab = Window:CreateTab("Combat", nil)
-local VisualsTab = Window:CreateTab("Visuals", nil)
-CombatTab:CreateToggle({
-   Name = "Silent Aim",
-   CurrentValue = false,
-   Callback = function(Value)
-      _G.SilentAimEnabled = Value 
-   end,
-})
-CombatTab:CreateToggle({
-   Name = "Hitbox Normal",
-   CurrentValue = false,
-   Callback = function(Value)
-      _G.HitboxEnabled = Value
-   end,
-})
-CombatTab:CreateToggle({
-   Name = "Hitbox (Pro)",
-   CurrentValue = false,
-   Callback = function(Value)
-      _G.HitboxVisibleEnabled = Value
-   end,
-})
-
-VisualsTab:CreateToggle({
-   Name = "Highlight Brillo",
-   CurrentValue = false,
-   Callback = function(Value)
-      _G.ChamsEnabled = Value
-   end,
-})
-
-VisualsTab:CreateToggle({
-   Name = "Auto Jump",
-   CurrentValue = _G.AutoJumpEnabled or false,
-   Callback = function(Value)
-      _G.AutoJumpEnabled = Value
-   end,
-})
-
-VisualsTab:CreateToggle({
-   Name = "Hitbox Disimulada",
-   CurrentValue = false,
-   Callback = function(Value)
-      _G.HitboxDisimuladaEnabled = Value
-   end,
-})
-
-CombatTab:CreateToggle({
-   Name = "Cámara Rápida (FastCam)",
-   CurrentValue = false,
-   Callback = function(Value)
-      _G.FastCam = Value
-   end,
-})
-
-CombatTab:CreateToggle({
-   Name = "Speed Disimulado",
-   CurrentValue = false,
-   Callback = function(Value)
-      _G.SpeedEnabled = Value
-   end,
-})
-
-CombatTab:CreateToggle({
-   Name = "Anti Contador",
-   CurrentValue = false,
-   Callback = function(Value)
-      _G.ActiveMode = Value
-      
-      if not Value then
-         local Humanoid = game:GetService("Players").LocalPlayer.Character and game:GetService("Players").LocalPlayer.Character:FindFirstChild("Humanoid")
-         if Humanoid then Humanoid.WalkSpeed = 16 end
-      end
-   end,
-})
-
 local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
-local Mouse = LocalPlayer:GetMouse()
-local Camera = workspace.CurrentCamera
-
-
-_G.SilentAimEnabled = false
-_G.HitboxEnabled = false
-_G.HitboxVisibleEnabled = false
-_G.ChamsEnabled = false
-
-
-local function IsPlayerInMatch(player)
-    -- 1. Obtenemos tus propios atributos
-    local myTeam = LocalPlayer:GetAttribute("Team")
-    local myGame = LocalPlayer:GetAttribute("Game")
-    local myMatch = LocalPlayer:GetAttribute("MatchId")
-    
-    -- 2. Obtenemos los atributos del jugador objetivo
-    local targetTeam = player:GetAttribute("Team")
-    local targetGame = player:GetAttribute("Game")
-    local targetMatch = player:GetAttribute("MatchId")
-    
-    -- 3. Verificamos:
-    --    a) Que ambos estén en la misma partida (Game y MatchId)
-    --    b) Que el equipo sea diferente (ej: si tú eres TeamBlue, el enemigo debe ser TeamRed)
-    if myGame and myMatch and targetGame and targetMatch then
-        if myGame == targetGame and myMatch == targetMatch then
-            if myTeam and targetTeam and myTeam ~= targetTeam then
-                return true
-            end
-        end
-    end
-    
-    return false
-end
-
-local S = { espColor = Color3.fromRGB(255,0,0) }
-local Highlights = {}
-
-task.spawn(function()
-	while task.wait(0.1) do
-		if not _G.ChamsEnabled then
-			for _,hl in pairs(Highlights) do if hl then hl:Destroy() end end
-			table.clear(Highlights)
-		else
-			for _,p in pairs(Players:GetPlayers()) do
-				if p ~= LocalPlayer and p.Character and p.Character:FindFirstChild("HumanoidRootPart") and IsPlayerInMatch(p) then
-					local char = p.Character
-					if not Highlights[p] then
-						local hl = Instance.new("Highlight")
-						hl.Name = "ALEXX_Highlight"
-						hl.FillTransparency = 0.5
-						hl.OutlineTransparency = 0
-						hl.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
-						hl.Adornee = char
-						hl.Parent = game.CoreGui
-						Highlights[p] = hl
-					end
-					Highlights[p].FillColor = S.espColor
-					Highlights[p].OutlineColor = S.espColor
-					Highlights[p].Adornee = char
-				else
-					if Highlights[p] then Highlights[p]:Destroy() Highlights[p] = nil end
-				end
-			end
-		end
-	end
-end)
-
-task.spawn(function()
-    while task.wait(0.2) do
-        local character = game.Players.LocalPlayer.Character
-        local humanoid = character and character:FindFirstChild("Humanoid")
-        
-        if humanoid then
-            if _G.SpeedEnabled then
-                
-                if humanoid.WalkSpeed ~= 23 then
-                    humanoid.WalkSpeed = 23
-                end
-            else
-                
-                if humanoid.WalkSpeed == 23 then
-                    humanoid.WalkSpeed = 16
-                end
-            end
-        end
-    end
-end)
-
-
-
-task.spawn(function()
-	while task.wait(0.15) do
-		for _,p in pairs(Players:GetPlayers()) do
-			if p ~= LocalPlayer and p.Character and p.Character:FindFirstChild("HumanoidRootPart") then
-				local HRP = p.Character.HumanoidRootPart
-				if not IsPlayerInMatch(p) then
-					HRP.Size = Vector3.new(2,2,1)
-					HRP.Transparency = 1
-					HRP.CanCollide = false
-					continue
-				end
-				if _G.HitboxEnabled then
-					HRP.Size = Vector3.new(7,7,7)
-					HRP.Transparency = 0.8
-					HRP.CanCollide = false
-				elseif _G.HitboxVisibleEnabled then
-					local origin = Camera.CFrame.Position
-					local direction = (HRP.Position - origin)
-					local params = RaycastParams.new()
-					params.FilterType = Enum.RaycastFilterType.Blacklist
-					params.FilterDescendantsInstances = {LocalPlayer.Character, p.Character}
-					local result = workspace:Raycast(origin, direction, params)
-					if not result then
-						HRP.Size = Vector3.new(7.5,7.5,7.5)
-						HRP.Transparency = 0.8
-						HRP.CanCollide = false
-					else
-						HRP.Size = Vector3.new(2,2,1)
-						HRP.Transparency = 1
-						HRP.CanCollide = false
-					end
-				else
-					HRP.Size = Vector3.new(2,2,1)
-					HRP.Transparency = 1
-					HRP.CanCollide = false
-				end
-			end
-		end
-	end
-end)
-
-local function IsVisible(targetPart)
-    local raycastParams = RaycastParams.new()
-    raycastParams.FilterDescendantsInstances = {LocalPlayer.Character, Camera}
-    raycastParams.FilterType = Enum.RaycastFilterType.Exclude
-    
-    local ray = workspace:Raycast(Camera.CFrame.Position, (targetPart.Position - Camera.CFrame.Position), raycastParams)
-    
-    if not ray then return true end
-    return ray.Instance:IsDescendantOf(targetPart.Parent)
-end
-
-local function getBestTarget()
-	local target = nil
-	local shortestDistance = math.huge
-	local Center = Vector2.new(
-		Camera.ViewportSize.X / 2,
-		Camera.ViewportSize.Y / 2
-	)
-	for _,v in ipairs(Players:GetPlayers()) do
-		if v ~= LocalPlayer and v.Character and v.Character:FindFirstChild("HumanoidRootPart") and v.Character:FindFirstChild("Humanoid") and v.Character.Humanoid.Health > 0 and IsPlayerInMatch(v) then
-			local hrp = v.Character.HumanoidRootPart
-			local pos,visible = Camera:WorldToViewportPoint(hrp.Position)
-		
-			if visible and IsVisible(hrp) then
-				local distance = (Vector2.new(pos.X,pos.Y) - Center).Magnitude
-				if distance < shortestDistance then
-					shortestDistance = distance
-					target = hrp
-				end
-			end
-		end
-	end
-	return target
-end
-
-local mt = getrawmetatable(game)
-local oldIndex = mt.__index
-setreadonly(mt, false)
-mt.__index = newcclosure(function(self, index)
-    if _G.SilentAimEnabled and self == Mouse and (index == "Hit" or index == "Target") then
-        local target = getBestTarget()
-        if target then
-            if index == "Hit" then return target.CFrame
-            elseif index == "Target" then return target.Parent end
-        end
-    end
-    return oldIndex(self, index)
-end)
-setreadonly(mt, true)
-
-
 local RunService = game:GetService("RunService")
+local Stats = game:GetService("Stats")
+local TweenService = game:GetService("TweenService")
+local player = Players.LocalPlayer
 
-RunService.Heartbeat:Connect(function()
-    if not _G.HitboxDisimuladaEnabled then return end
-    
-    for _, p in pairs(Players:GetPlayers()) do
-        if p ~= LocalPlayer and p.Character and p.Character:FindFirstChild("HumanoidRootPart") and IsPlayerInMatch(p) then
-            local HRP = p.Character.HumanoidRootPart
-            
-            
-            local origin = Camera.CFrame.Position
-            local direction = (HRP.Position - origin)
-            local params = RaycastParams.new()
-            params.FilterType = Enum.RaycastFilterType.Exclude
-            params.FilterDescendantsInstances = {LocalPlayer.Character}
-            
-            local result = workspace:Raycast(origin, direction, params)
-            
-            
-            local targetSize = (result and result.Instance:IsDescendantOf(p.Character)) and Vector3.new(4, 4, 4) or Vector3.new(2, 2, 1)
-            local targetTransparency = (result and result.Instance:IsDescendantOf(p.Character)) and 0.8 or 1
-            
-            
-            if HRP.Size ~= targetSize then
-                HRP.Size = targetSize
-                HRP.Transparency = targetTransparency
-                HRP.CanCollide = false
-            end
-        end
-    end
+-- 1. Contenedor Principal
+local screenGui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
+local borderFrame = Instance.new("Frame", screenGui)
+borderFrame.Size = UDim2.new(0, 400, 0, 250)
+borderFrame.Position = UDim2.new(0.5, -200, 0.5, -125)
+borderFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Instance.new("UICorner", borderFrame).CornerRadius = UDim.new(0, 15)
+borderFrame.Active = true
+borderFrame.Draggable = true
+
+local gradient = Instance.new("UIGradient", borderFrame)
+gradient.Rotation = 90
+gradient.Color = ColorSequence.new({
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 0)),
+    ColorSequenceKeypoint.new(0.33, Color3.fromRGB(0, 255, 0)),
+    ColorSequenceKeypoint.new(0.66, Color3.fromRGB(0, 0, 255)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 0, 0))
+})
+
+local mainFrame = Instance.new("Frame", borderFrame)
+mainFrame.Size = UDim2.new(0, 394, 0, 244)
+mainFrame.Position = UDim2.new(0, 3, 0, 3)
+mainFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
+Instance.new("UICorner", mainFrame).CornerRadius = UDim.new(0, 13)
+
+-- Botón de Salir (X) y By Yisus
+local closeBtn = Instance.new("TextButton", mainFrame)
+closeBtn.Size = UDim2.new(0, 30, 0, 30)
+closeBtn.Position = UDim2.new(0.92, 0, 0.05, 0)
+closeBtn.Text = "X"
+closeBtn.TextColor3 = Color3.new(1, 1, 1)
+closeBtn.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
+Instance.new("UICorner", closeBtn).CornerRadius = UDim.new(1, 0)
+closeBtn.MouseButton1Click:Connect(function() screenGui:Destroy() end)
+
+local credits = Instance.new("TextLabel", mainFrame)
+credits.Size = UDim2.new(0, 100, 0, 30)
+credits.Position = UDim2.new(0.65, 0, 0.05, 0)
+credits.Text = "By Yisus"
+credits.TextColor3 = Color3.fromRGB(150, 150, 150)
+credits.BackgroundTransparency = 1
+
+-- 2. Perfil y Nombre
+local avatarCircle = Instance.new("ImageLabel", mainFrame)
+avatarCircle.Size = UDim2.new(0, 60, 0, 60)
+avatarCircle.Position = UDim2.new(0.03, 0, 0.05, 0)
+avatarCircle.Image = Players:GetUserThumbnailAsync(player.UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size100x100)
+avatarCircle.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
+Instance.new("UICorner", avatarCircle).CornerRadius = UDim.new(1, 0)
+
+local nameLabel = Instance.new("TextLabel", mainFrame)
+nameLabel.Size = UDim2.new(0, 200, 0, 60)
+nameLabel.Position = UDim2.new(0.20, 0, 0.05, 0)
+nameLabel.Text = player.Name
+nameLabel.TextColor3 = Color3.new(1, 1, 1)
+nameLabel.Font = Enum.Font.GothamBold
+nameLabel.TextSize = 20
+nameLabel.TextXAlignment = Enum.TextXAlignment.Left
+nameLabel.BackgroundTransparency = 1
+
+-- 3. Key System con diseño mejorado
+local keyInput = Instance.new("TextBox", mainFrame)
+keyInput.Size = UDim2.new(0, 350, 0, 40)
+keyInput.Position = UDim2.new(0.5, -175, 0.4, 0)
+keyInput.PlaceholderText = "Escribe tu key"
+keyInput.Text = ""
+keyInput.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
+keyInput.TextColor3 = Color3.new(1, 1, 1)
+keyInput.Font = Enum.Font.Gotham
+Instance.new("UICorner", keyInput).CornerRadius = UDim.new(0, 8)
+
+-- Borde brillante para el TextBox
+local stroke = Instance.new("UIStroke", keyInput)
+stroke.Color = Color3.fromRGB(50, 50, 60)
+stroke.Thickness = 2
+
+keyInput.Focused:Connect(function()
+    TweenService:Create(stroke, TweenInfo.new(0.3), {Color = Color3.fromRGB(0, 102, 255)}):Play()
+end)
+keyInput.FocusLost:Connect(function()
+    TweenService:Create(stroke, TweenInfo.new(0.3), {Color = Color3.fromRGB(50, 50, 60)}):Play()
 end)
 
-game:GetService("RunService").RenderStepped:Connect(function()
-    if _G.AutoJumpEnabled then
-        local Character = game.Players.LocalPlayer.Character
-        local Humanoid = Character and Character:FindFirstChild("Humanoid")
-        if Humanoid and Humanoid:GetState() == Enum.HumanoidStateType.Running then
-            Humanoid.Jump = true
-        end
-    end
+-- Función de animación corregida
+local function addClickAnimation(btn)
+    local originalSize = btn.Size
+    btn.MouseButton1Down:Connect(function()
+        TweenService:Create(btn, TweenInfo.new(0.1), {Size = originalSize - UDim2.new(0, 5, 0, 5)}):Play()
+    end)
+    btn.MouseButton1Up:Connect(function()
+        TweenService:Create(btn, TweenInfo.new(0.1), {Size = originalSize}):Play()
+    end)
+end
+
+local getKeyBtn = Instance.new("TextButton", mainFrame)
+getKeyBtn.Size = UDim2.new(0, 170, 0, 40)
+getKeyBtn.Position = UDim2.new(0.5, -175, 0.65, 0)
+getKeyBtn.Text = "GET KEY"
+getKeyBtn.BackgroundColor3 = Color3.fromRGB(0, 102, 255)
+getKeyBtn.TextColor3 = Color3.new(1, 1, 1)
+getKeyBtn.Font = Enum.Font.GothamBold
+Instance.new("UICorner", getKeyBtn).CornerRadius = UDim.new(0, 8)
+addClickAnimation(getKeyBtn)
+
+local copyDiscordBtn = Instance.new("TextButton", mainFrame)
+copyDiscordBtn.Size = UDim2.new(0, 170, 0, 40)
+copyDiscordBtn.Position = UDim2.new(0.5, 5, 0.65, 0)
+copyDiscordBtn.Text = "COPY DISCORD"
+copyDiscordBtn.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+copyDiscordBtn.TextColor3 = Color3.new(1, 1, 1)
+copyDiscordBtn.Font = Enum.Font.GothamBold
+Instance.new("UICorner", copyDiscordBtn).CornerRadius = UDim.new(0, 8)
+addClickAnimation(copyDiscordBtn)
+
+-- 4. Barra inferior
+local statusLabel = Instance.new("TextLabel", mainFrame)
+statusLabel.Size = UDim2.new(1, 0, 0, 30)
+statusLabel.Position = UDim2.new(0, 0, 0.85, 0)
+statusLabel.TextColor3 = Color3.fromRGB(150, 150, 150)
+statusLabel.TextSize = 14
+statusLabel.BackgroundTransparency = 1
+
+-- 5. Lógica de giro y Ping en tiempo real
+local speed = 60
+local rot = 0
+RunService.RenderStepped:Connect(function(dt)
+    rot = rot + (speed * dt)
+    avatarCircle.Rotation = rot
+    gradient.Rotation = rot
+    local ping = math.floor(Stats.Network.ServerStatsItem["Data Ping"]:GetValue() + 0.5)
+    statusLabel.Text = "Status: Online | Ping: " .. ping .. "ms"
 end)
 
-
-local RunService = game:GetService("RunService")
-local Players = game:GetService("Players")
-
-local AntiContadorConnection = nil
-
-local function ToggleAntiContador(Value)
-    if Value then
-        -- Iniciar el bucle de mantenimiento
-        AntiContadorConnection = RunService.Heartbeat:Connect(function()
-            local Character = Players.LocalPlayer.Character
-            if Character then
-                local Humanoid = Character:FindFirstChild("Humanoid")
-                if Humanoid then
-                    -- Asegurar que el humanoide no esté en modo plataforma
-                    Humanoid.PlatformStand = false
-                    -- Forzar estado de pie si entra en física
-                    if Humanoid:GetState() == Enum.HumanoidStateType.Physics then
-                        Humanoid:ChangeState(Enum.HumanoidStateType.GettingUp)
-                    end
-                    
-                    Humanoid.WalkSpeed = 30
-                end
-            end
-        end)
+-- Lógica para los botones
+getKeyBtn.MouseButton1Click:Connect(function()
+    local input = keyInput.Text
+    -- Cambia "TU_KEY_SECRETA_AQUI" por tu clave real
+    if input == "ALEXX2006@" then
+        statusLabel.Text = "Key correcta. Ejecutando..."
+        -- AQUÍ VA TU CÓDIGO DE SCRIPT QUE SE EJECUTA SI LA KEY ES VÁLIDA
     else
-        
-        if AntiContadorConnection then
-            AntiContadorConnection:Disconnect()
-            AntiContadorConnection = nil
-        end
-        local Humanoid = Players.LocalPlayer.Character and Players.LocalPlayer.Character:FindFirstChild("Humanoid")
-        if Humanoid then 
-            Humanoid.WalkSpeed = 16 
-        end
-    end
-end
-
-task.spawn(function()
-    while true do
-        task.wait(0.01)
-        if _G.ActiveMode then
-            local Player = game:GetService("Players").LocalPlayer
-            local Character = Player.Character
-            if Character and Character:FindFirstChild("Humanoid") then
-                local Humanoid = Character.Humanoid
-                Humanoid.PlatformStand = false
-                if Humanoid:GetState() == Enum.HumanoidStateType.Physics then
-                    Humanoid:ChangeState(Enum.HumanoidStateType.GettingUp)
-                end
-                Humanoid.WalkSpeed = 30 -- Velocidad disimulada
-            end
-        end
+        statusLabel.Text = "Key incorrecta, intenta de nuevo"
+        task.wait(2)
+        statusLabel.Text = "Status: Online | Ping: " .. math.floor(Stats.Network.ServerStatsItem["Data Ping"]:GetValue() + 0.5) .. "ms"
     end
 end)
 
-
-Rayfield:LoadConfiguration()
-end
-
-Verify.MouseButton1Click:Connect(function()
-	if KeyBox.Text == KEY then
-		Gui:Destroy()
-		LoadMainScript()
-	else
-		KeyBox.Text = ""
-		KeyBox.PlaceholderText = "Key Incorrecta"
-	end
+copyDiscordBtn.MouseButton1Click:Connect(function()
+    -- Sustituye el enlace por tu link de Discord
+    setclipboard("https://discord.gg/UseegSKU")
+    statusLabel.Text = "Discord copiado al portapapeles"
+    task.wait(2)
+    statusLabel.Text = "Status: Online | Ping: " .. math.floor(Stats.Network.ServerStatsItem["Data Ping"]:GetValue() + 0.5) .. "ms"
 end)
